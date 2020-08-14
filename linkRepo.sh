@@ -85,10 +85,14 @@ error "Not possible to init git") &&
 " >> $fullDirectory/README.md || # Create the README.md file on the repository
 error "Not posible to create README.md") &&
 
+(echo "# ThingsToDo:
+- " >> $fullDirectory/ThingsToDo.md || # Create the ThingsToDo.md file on the repository
+error "Not posible to create ThingsToDo.md") &&
+
 cd $fullDirectory/ &&
-(git add README.md || # Add README.md
+(git add README.md ThingsToDo.md || # Add README.md and ThingsToDo.md
 error "Not possible to add README.md") &&
-(git commit README.md -m "readme.md created" || # Commit the creation
+(git commit README.md ThingsToDo.md -m "README.md and ThingsToDo.md created" || # Commit the creation
 error "Error at commit") &&
 (git remote add origin git@github.com:$u/$repoName.git || # Link the repositories
 error "Could not execute \"git remote add origin git@github.com:$u/$repoName.git\"") &&
