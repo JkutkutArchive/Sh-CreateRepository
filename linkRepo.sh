@@ -89,9 +89,13 @@ error "Not posible to create README.md") &&
 - " >> $fullDirectory/ThingsToDo.md || # Create the ThingsToDo.md file on the repository
 error "Not posible to create ThingsToDo.md") &&
 
+(touch $fullDirectory/.gitignore || # Create the .gitignore file on the repository
+error "Not posible to create ThingsToDo.md") &&
+
+
 cd $fullDirectory/ &&
-(git add README.md ThingsToDo.md || # Add README.md and ThingsToDo.md
-error "Not possible to add README.md") &&
+(git add README.md ThingsToDo.md .gitignore || # Add README.md, ThingsToDo.md and .gitignore
+error "Not possible to add the created files") &&
 (git commit README.md ThingsToDo.md -m "README.md and ThingsToDo.md created" || # Commit the creation
 error "Error at commit") &&
 (git remote add origin git@github.com:$u/$repoName.git || # Link the repositories
