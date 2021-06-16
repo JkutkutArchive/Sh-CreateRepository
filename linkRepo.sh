@@ -40,31 +40,33 @@ u="jkutkut";
 fullDirectory=~/github; # Default directory
 
 # Change the user and the directory acording to the arguments given.
-while (( $current <= $# )); do
+current=1;
+while [ ! -z $1 ]; do # While the are avalible arguments
     v=""; # Variable to change
     vContent=""; # Value to asing to the variable
     q=""; # Question to tell the user if no further arguments given
-    if [[ ${!current} == "-u" ]]; then
+
+    if [ $1 = "-u" ]; then
         v="u";
         q="Name of the user?";
-    elif [[ ${!current} == "-d" ]]; then
+    elif [ $1 = "-d" ]; then
         q="Directory?";
         v="fullDirectory";
     else
         error "Invalid argument";
     fi
 
-    current=$(($current+1)); # Next one should be the content
+    shift; # -ANY argument removed
         
-    if [[ ${!current} == *"-"* ]] || [[ ${!current} == "" ]]; then # If no user given
-        ask "$q" "";
-        vContent=$askResponse; # The user is the response from the question
+    if [ $(expr match "$1" ^\(-.+\)?$) ]; then # If not given
+        ask "$q" ""; # Ask for it
+        vContent=$askResponse; # The response is the content
     else
-        vContent=${!current}; # Next argument is the user
+        vContent=$1; # Next argument is the content
+        shift;
     fi
 
     eval $v="$vContent";
-    current=$(($current+1));
 done
 
 
@@ -75,10 +77,9 @@ fullDirectory=$fullDirectory/$repoName; # Update directory based on the name of 
 
 
 echo "
-Atempting to create a reposititory on ${YELLOW}$fullDirectory${NC}
+Atempting to link a reposititory on ${YELLOW}$fullDirectory${NC}
 and connect it to the user ${YELLOW}$u${NC}.
 ";
-
 (mkdir $fullDirectory || # Make the directory to init the repo
 error "Directory is not correct.") && 
 
