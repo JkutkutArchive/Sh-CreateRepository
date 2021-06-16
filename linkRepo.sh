@@ -97,7 +97,7 @@ Atempting to link a reposititory on ${YELLOW}$fullDirectory${NC}
 and connect it to the user ${YELLOW}$u${NC}.
 ";
 
-# Create directory
+# Create directory and init repository
 (mkdir $fullDirectory || # Make the directory to init the repo
 error "Directory is not correct.") && 
 
@@ -106,13 +106,10 @@ cd $fullDirectory && # Go to directory
 (git init || # Init repository
 error "Not possible to init git") &&
 
-
 # Create initial files
-(echo "# $repoName:
-" >> README.md && # Create the README.md file on the repository
-touch ".gitignore" && # Create the .gitignore file on the repository
+(echo -e "# $repoName:\n" >> README.md && # Create the README.md file on the repository
+touch .gitignore || # Create the .gitignore file on the repository
 error "Not posible to create initial files") &&
-
 
 
 (git add .gitignore * || # Add all files created
@@ -127,23 +124,21 @@ if [ $extraFiles -eq 1 ]; then # If we want to create a repository with extra fi
     error "Not able to create directories on the repository") &&
     echo $(ls);
     echo "---------"
-    (echo "# ThingsToDo:
-- " >> ./.info/ThingsToDo.md || # Create the ThingsToDo.md file on the repository
+    (echo -e "# ThingsToDo:\n- " >> ./.info/ThingsToDo.md || # Create the ThingsToDo.md file on the repository
     error "not able to create the extra files")
 fi
 
-echo \"$type\";
 if [ $type = "create" ]; then # If the intention is to create a repository
     echo "Creating repository using hub:";
-    # hub create ||
-    # error "Not able to create repository";
+    hub create ||
+    error "Not able to create repository";
 else # Connect to github and update the content to the already created repo
     echo "Linking repository to github account";
-    # (git remote add origin git@github.com:$u/$repoName.git || # Link the repositories
-    # error "Could not execute \"git remote add origin git@github.com:$u/$repoName.git\"";) &&
+    (git remote add origin git@github.com:$u/$repoName.git || # Link the repositories
+    error "Could not execute \"git remote add origin git@github.com:$u/$repoName.git\"";) &&
 
-    # (sudo -H -u $USER bash -c 'git push -u origin master' || # Upload the new repository
-    # error "Not able to push the changes") &&
+    (sudo -H -u $USER bash -c 'git push -u origin master' || # Upload the new repository
+    error "Not able to push the changes")
 fi
 
 echo "--------------------------------------
