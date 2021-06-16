@@ -44,11 +44,11 @@ echo "${TITLE}
 
 u="jkutkut"; # Default user
 fullDirectory=~/github; # Default directory
-type="create"; # Default type of link
+type="create"; # Default type of link (create repository or use already created repository)
 extraFiles=1; # If extra files should be created (1: true, 0: false).
+template="None"; # If special templates selected (Web...)
 
 # Change the user and the directory acording to the arguments given.
-current=1;
 while [ ! -z $1 ]; do # While the are avalible arguments
     v=""; # Variable to change
     vContent=""; # Value to asing to the variable
@@ -68,10 +68,17 @@ while [ ! -z $1 ]; do # While the are avalible arguments
             shift;
             continue;
             ;;
-        --\(no\)?[eE]xtraFiles)
-            extraFiles=$(echo $1 | sed -e 's/--//');
+        --noExtraFiles|--extraFiles)
+            if  [ $(expr match "$1" no ) ]; then
+                extraFiles=0;
+            else
+                extraFiles=1;
+            fi
             shift;
             continue;
+            ;;
+        --web)
+            template="web";
             ;;
         *)
             error "Invalid argument";
