@@ -13,15 +13,15 @@
 
 askResponse=""; #When executing the function ask(), the response will be stored here
 ask(){ # to do the read in terminal, save the response in askResponse
-  text=$1;
-  textEnd=$2;
-  read -p "$(echo ${LBLUE}"$text"${NC} $textEnd)->" askResponse;
+    text=$1;
+    textEnd=$2;
+    read -p "$(echo ${LBLUE}"$text"${NC} $textEnd)->" askResponse;
 }
 error(){ # function to generate the error messages. If executed, ends the script.
-  err=$1;
-  echo "${RED}~~~~~~~~  ERROR ~~~~~~~~
+    err=$1;
+    echo "${RED}~~~~~~~~  ERROR ~~~~~~~~
     $1${NC}";
-  exit 1
+    exit 1
 }
 
 echo "${TITLE}
@@ -35,43 +35,49 @@ echo "${TITLE}
                                |_|                              |___/ ${NC}"
 
 
-#Select the name of the user on Github
-# --------- OPTION 1 ---------
-# ask "Name of the user?" "";
-# u=$askResponse;
 
-# --------- OPTION 2 ---------
-u="jkutkut"
+u="jkutkut";
+fullDirectory=~/github; # Default directory
+
+# Change the user and the directory acording to the arguments given.
+while (( $current <= $# )); do
+    v=""; # Variable to change
+    vContent=""; # Value to asing to the variable
+    q=""; # Question to tell the user if no further arguments given
+    if [[ ${!current} == "-u" ]]; then
+        v="u";
+        q="Name of the user?";
+    elif [[ ${!current} == "-d" ]]; then
+        q="Directory?";
+        v="fullDirectory";
+    else
+        error "Invalid argument";
+    fi
+
+    current=$(($current+1)); # Next one should be the content
+        
+    if [[ ${!current} == *"-"* ]] || [[ ${!current} == "" ]]; then # If no user given
+        ask "$q" "";
+        vContent=$askResponse; # The user is the response from the question
+    else
+        vContent=${!current}; # Next argument is the user
+    fi
+
+    eval $v="$vContent";
+    current=$(($current+1));
+done
+
 
 ask "Name of the repository?" "";
 repoName=$askResponse; # Store the name of the Repository.
 
-
-#Select the name of the user on Github
-# --------- OPTION 1 ---------
-# ask "Do you want to store the repository here?" "[yes/y], [no,n]"
-# case $askResponse in
-#   yes|y|Yes|Y)
-#       directory="github";
-#   ;;
-#   no|n|No|N)
-#       ask "Enter the custom directory" "";
-#       directory=$askResponse;
-#   ;;
-#   *)
-#       echo "Not found";
-#   ;;
-# esac
-# fullDirectory=~/$directory/$repoName
-
-# --------- OPTION 2 ---------
-fullDirectory=~/github/$repoName
+fullDirectory=$fullDirectory/$repoName; # Update directory based on the name of the repo
 
 
 echo "
 Atempting to create a reposititory on ${YELLOW}$fullDirectory${NC}
 and connect it to the user ${YELLOW}$u${NC}.
-"
+";
 
 (mkdir $fullDirectory || # Make the directory to init the repo
 error "Directory is not correct.") && 
@@ -84,6 +90,9 @@ error "Not possible to init git") &&
 (echo "# $repoName:
 " >> $fullDirectory/README.md || # Create the README.md file on the repository
 error "Not posible to create README.md") &&
+
+(touch .gitignore || # Create the .gitignore file
+error "Not able to create the .gitignore file") &&
 
 (echo "# ThingsToDo:
 - " >> $fullDirectory/ThingsToDo.md || # Create the ThingsToDo.md file on the repository
