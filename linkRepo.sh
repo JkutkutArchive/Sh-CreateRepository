@@ -37,8 +37,7 @@ echo "${TITLE}
 
 
 u="jkutkut"; # Default user
-fullDirectory=.; # Default directory
-# fullDirectory=~/github; # Default directory
+fullDirectory=~/github; # Default directory
 type="create"; # Default type of link
 extraFiles=1; # If extra files should be created (1: true, 0: false).
 
@@ -50,11 +49,11 @@ while [ ! -z $1 ]; do # While the are avalible arguments
     q=""; # Question to tell the user if no further arguments given
 
     case $1 in
-        -u)
+        -u|--user)
             v="u";
             q="Name of the user?";
             ;;
-        -d)
+        -d|--dir|--directory)
             q="Directory?";
             v="fullDirectory";
             ;;
@@ -63,7 +62,7 @@ while [ ! -z $1 ]; do # While the are avalible arguments
             shift;
             continue;
             ;;
-        --\(no\)?ExtraFiles)
+        --\(no\)?[eE]xtraFiles)
             extraFiles=$(echo $1 | sed -e 's/--//');
             shift;
             continue;
