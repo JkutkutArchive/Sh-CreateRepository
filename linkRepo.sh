@@ -85,29 +85,32 @@ error "Directory is not correct.") &&
 
 # ls $fullDirectory &&
 
-(git init $fullDirectory || # Init repository
+cd $fullDirectory/ &&
+(git init || # Init repository
 error "Not possible to init git") &&
 
 (echo "# $repoName:
-" >> $fullDirectory/README.md || # Create the README.md file on the repository
+" >> README.md || # Create the README.md file on the repository
 error "Not posible to create README.md") &&
 
 (touch .gitignore || # Create the .gitignore file
 error "Not able to create the .gitignore file") &&
 
 (echo "# ThingsToDo:
-- " >> $fullDirectory/ThingsToDo.md || # Create the ThingsToDo.md file on the repository
+- " >> ThingsToDo.md || # Create the ThingsToDo.md file on the repository
 error "Not posible to create ThingsToDo.md") &&
 
-(touch $fullDirectory/.gitignore || # Create the .gitignore file on the repository
+(touch .gitignore || # Create the .gitignore file on the repository
 error "Not posible to create ThingsToDo.md") &&
 
 
-cd $fullDirectory/ &&
-(git add README.md ThingsToDo.md .gitignore || # Add README.md, ThingsToDo.md and .gitignore
+
+(git add .gitignore * || # Add all files created
 error "Not possible to add the created files") &&
-(git commit README.md ThingsToDo.md -m "README.md and ThingsToDo.md created" || # Commit the creation
+(git commit -am "Initial files created" || # Commit the creation
 error "Error at commit") &&
+
+# Connect to github and update the content
 (git remote add origin git@github.com:$u/$repoName.git || # Link the repositories
 error "Could not execute \"git remote add origin git@github.com:$u/$repoName.git\"";) &&
 
