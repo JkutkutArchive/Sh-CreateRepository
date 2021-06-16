@@ -108,7 +108,7 @@ error "Not possible to add the created files") &&
 (git commit README.md ThingsToDo.md -m "README.md and ThingsToDo.md created" || # Commit the creation
 error "Error at commit") &&
 (git remote add origin git@github.com:$u/$repoName.git || # Link the repositories
-error "Could not execute \"git remote add origin git@github.com:$u/$repoName.git\"") &&
+error "Could not execute \"git remote add origin git@github.com:$u/$repoName.git\"";) &&
 
 
 (sudo -H -u $USER bash -c 'git push -u origin master' || # Upload the new repository
@@ -117,4 +117,4 @@ error "Not able to push the changes") &&
 echo "--------------------------------------
 ${LGREEN}
 Repositories linked${NC}
-"
+";
