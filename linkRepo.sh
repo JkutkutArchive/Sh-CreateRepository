@@ -39,6 +39,7 @@ echo "${TITLE}
 u="jkutkut"; # Default user
 fullDirectory=~/github; # Default directory
 type="create"; # Default type of link
+extraFiles=1; # If extra files should be created (1: true, 0: false).
 
 # Change the user and the directory acording to the arguments given.
 current=1;
@@ -46,7 +47,7 @@ while [ ! -z $1 ]; do # While the are avalible arguments
     v=""; # Variable to change
     vContent=""; # Value to asing to the variable
     q=""; # Question to tell the user if no further arguments given
-    echo $1
+
     if [ $1 = "-u" ]; then
         v="u";
         q="Name of the user?";
@@ -59,6 +60,14 @@ while [ ! -z $1 ]; do # While the are avalible arguments
         continue;
     elif [ $1 = "--link" ]; then
         type="link";
+        shift;
+        continue;
+    elif [ $1 = "--extraFiles" ]; then
+        extraFiles=1;
+        shift;
+        continue;
+    elif [ $1 = "--noExtraFiles" ]; then
+        extraFiles=0;
         shift;
         continue;
     else
@@ -97,8 +106,6 @@ cd $fullDirectory/ && # Go to directory
 (git init || # Init repository
 error "Not possible to init git") &&
 
-(mkdir .info ||
-error "Not able to create directories on the repository") &&
 
 # Create initial files
 (echo "# $repoName:
@@ -116,6 +123,15 @@ error "Not possible to add the created files") &&
 
 (git commit -am "Initial files created" || # Commit the creation
 error "Error at commiting initial files") &&
+
+if [ $extraFiles -eq 1 ]; then # If we want to create a repository with extra files
+    # Add the extra files
+    (mkdir .info ||
+    error "Not able to create directories on the repository") &&
+    (echo "# ThingsToDo:
+- " >> .info/ThingsToDo.md; || # Create the ThingsToDo.md file on the repository
+    error "not able to create the extra files")
+fi
 
 
 if [ $type = "create" ]; then # If the intention is to create a repository
