@@ -90,11 +90,8 @@ repoName=$askResponse; # Store the name of the Repository.
 
 fullDirectory=$fullDirectory/$repoName; # Update directory based on the name of the repo
 
+echo "\nAtempting to link a reposititory on ${YELLOW}$fullDirectory${NC}\nand connect it to the user ${YELLOW}$u${NC}.\n";
 
-echo "
-Atempting to link a reposititory on ${YELLOW}$fullDirectory${NC}
-and connect it to the user ${YELLOW}$u${NC}.
-";
 
 # Create directory and init repository
 (mkdir $fullDirectory || # Make the directory to init the repo
@@ -105,11 +102,11 @@ cd $fullDirectory && # Go to directory
 (git init || # Init repository
 error "Not possible to init git") &&
 
+
 # Create initial files
 (echo -e "# $repoName:\n" >> README.md && # Create the README.md file on the repository
 touch .gitignore || # Create the .gitignore file on the repository
 error "Not posible to create initial files") &&
-
 
 (git add .gitignore * || # Add all files created
 error "Not possible to add the created files") &&
@@ -117,7 +114,9 @@ error "Not possible to add the created files") &&
 (git commit -am "Initial files created" || # Commit the creation
 error "Error at commiting initial files") &&
 
-if [ $extraFiles -eq 1 ]; then # If we want to create a repository with extra files
+
+# If we want to create a repository with extra files
+if [ $extraFiles -eq 1 ]; then 
     # Add the extra files
     (mkdir ".info" ||
     error "Not able to create directories on the repository") &&
