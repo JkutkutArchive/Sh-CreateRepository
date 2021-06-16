@@ -1,14 +1,36 @@
 #!/bin/sh
 
 #colors:
-  NC='\033[0m' # No Color
-  RED='\033[0;31m'
-  GREEN='\033[0;32m'
-  LRED='\033[1;31m'
-  LGREEN='\033[1;32m'
-  YELLOW='\033[1;33m'
-  LBLUE='\033[1;34m'
-  TITLE='\033[38;5;33m'
+NC='\033[0m' # No Color
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+LRED='\033[1;31m'
+LGREEN='\033[1;32m'
+YELLOW='\033[1;33m'
+LBLUE='\033[1;34m'
+TITLE='\033[38;5;33m'
+
+
+if [ $1 = "--help" ]; then
+    echo "${TITLE}* CreateRepository help *${NC}\n";
+    echo "The script has the following arguments:";
+    echo "  ${LBLUE}-u [*arg]${NC}:\n    Change the user/owner of the repository.";
+    echo "    The parameter ${LBLUE}--user${NC} can also be used.\n";
+    echo "  ${LBLUE}-d [*arg]${NC}:\n    Change the directory to store the local repository (The path is intended to be absolute).";
+    echo "    The parameters ${LBLUE}--dir${NC} or ${LBLUE}--directory${NC} can also be used.\n";
+    echo "  ${LBLUE}--create${NC}:\n    If the repository should be created on github.\n";
+    echo "  ${LBLUE}--link${NC}:\n    If the repository should be linked to an already created repository on github.\n";
+    echo "  ${LBLUE}templates:${NC}:\n    Activate it adding the arguments ${LBLUE}--web${NC}, .\n    Each one will generate a repository structure with the basic files of the template.\n";
+    echo "  ${LBLUE}--extraFiles${NC}:\n    If the repository should be created with aditional files.\n";
+    echo "  ${LBLUE}--noExtraFiles${NC}:\n    If the repository should not be created with aditional files.\n";
+    
+
+    echo "${YELLOW}Notes:${NC}";
+    echo " - All arguments with ${LBLUE}[*arg]${NC} expect a single word to follow.\n   If not given, the script will ask for it before execution.";
+    echo " - All arguments can be concatenated at will. However, only the last ones will have the final desition.\n";
+    exit 0;
+fi
+
 
 
 askResponse=""; #When executing the function ask(), the response will be stored here
