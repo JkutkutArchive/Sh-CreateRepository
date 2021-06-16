@@ -79,6 +79,8 @@ while [ ! -z $1 ]; do # While the are avalible arguments
             ;;
         --web)
             template="web";
+            shift;
+            continue;
             ;;
         *)
             error "Invalid argument";
@@ -141,6 +143,23 @@ if [ $extraFiles -eq 1 ]; then
 
     addFiles2Repo "Extra files added";
 fi
+
+
+# If template, implement it
+case $template in
+    web)
+        (mkdir res res/CSS res/Img res/JS ||
+        error "Not able to create the directories of the web template") &&
+
+        (echo -e '<!DOCTYPE html><html>\n\t<head>\n\t\t<meta charset=\"utf-8\">\n\n\t\t<!-- Logo & title -->\n\t\t<title>$repoName</title>\n\t\t<!-- <link rel=\"icon\" href=\"\"> -->\n\n\t\t<!-- CSS -->\n\t\t<link rel=\"stylesheet\" type=\"text/css\" href=\"res/style.css\">\n\n\t\t<!-- JS -->\n\t\t<script src=\"sketch.js\"></script>\n\t</head>\n\t<body>\n\t</body>\n</html>' >> index.html &&
+        touch sketch.js Res/CSS/style.css ||
+        error "Not able to create the files of the web template")
+esac
+
+if [ ! $template = "None" ]; then # If template selected, add the files created
+    addFiles2Repo "Template $template structure added.";
+fi
+
 
 if [ $type = "create" ]; then # If the intention is to create a repository
     echo "Creating repository using hub:";
