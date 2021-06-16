@@ -38,6 +38,7 @@ echo "${TITLE}
 
 u="jkutkut";
 fullDirectory=~/github; # Default directory
+type="create";
 
 # Change the user and the directory acording to the arguments given.
 current=1;
@@ -45,13 +46,21 @@ while [ ! -z $1 ]; do # While the are avalible arguments
     v=""; # Variable to change
     vContent=""; # Value to asing to the variable
     q=""; # Question to tell the user if no further arguments given
-
+    echo $1
     if [ $1 = "-u" ]; then
         v="u";
         q="Name of the user?";
     elif [ $1 = "-d" ]; then
         q="Directory?";
         v="fullDirectory";
+    elif [ $1 = "--create" ]; then
+        type="create";
+        shift;
+        continue;
+    elif [ $1 = "--link" ]; then
+        type="link";
+        shift;
+        continue;
     else
         error "Invalid argument";
     fi
@@ -110,13 +119,19 @@ error "Not possible to add the created files") &&
 (git commit -am "Initial files created" || # Commit the creation
 error "Error at commit") &&
 
-# Connect to github and update the content
-(git remote add origin git@github.com:$u/$repoName.git || # Link the repositories
-error "Could not execute \"git remote add origin git@github.com:$u/$repoName.git\"";) &&
 
+if [ $type = "create" ]; then
+    echo "creating repository using hub:"; &&
+    hub create ||
+    error "Not able to create repository";
+else # Connect to github and update the content to the already created repo
+    echo "Linking repository to github account" &&
+    (git remote add origin git@github.com:$u/$repoName.git || # Link the repositories
+    error "Could not execute \"git remote add origin git@github.com:$u/$repoName.git\"";) &&
 
-(sudo -H -u $USER bash -c 'git push -u origin master' || # Upload the new repository
-error "Not able to push the changes") &&
+    (sudo -H -u $USER bash -c 'git push -u origin master' || # Upload the new repository
+    error "Not able to push the changes") &&
+fi
 
 echo "--------------------------------------
 ${LGREEN}
