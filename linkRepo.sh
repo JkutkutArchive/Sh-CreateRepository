@@ -145,12 +145,7 @@ error "Not possible to init git") &&
 touch .gitignore || # Create the .gitignore file on the repository
 error "Not posible to create initial files") &&
 
-# (git add .gitignore * || # Add all files created
-# error "Not possible to add the created files") &&
-
-# (git commit -am "Initial files created" || # Commit the creation
-# error "Error at commiting initial files") &&
-addFiles2Repo "Initial files created";
+addFiles2Repo "Initial files created" &&
 
 
 # If we want to create a repository with extra files
@@ -158,8 +153,6 @@ if [ $extraFiles -eq 1 ]; then
     # Add the extra files
     (mkdir ".info" ||
     error "Not able to create directories on the repository") &&
-    echo $(ls);
-    echo "---------"
     (echo -e "# ThingsToDo:\n- " >> ./.info/ThingsToDo.md || # Create the ThingsToDo.md file on the repository
     error "not able to create the extra files")
 
@@ -185,18 +178,15 @@ fi
 
 if [ $type = "create" ]; then # If the intention is to create a repository
     echo "Creating repository using hub:";
-    # hub create ||
-    # error "Not able to create repository";
+    hub create ||
+    error "Not able to create repository";
 else # Connect to github and update the content to the already created repo
     echo "Linking repository to github account";
-    # (git remote add origin git@github.com:$u/$repoName.git || # Link the repositories
-    # error "Could not execute \"git remote add origin git@github.com:$u/$repoName.git\"";) &&
+    (git remote add origin git@github.com:$u/$repoName.git || # Link the repositories
+    error "Could not execute \"git remote add origin git@github.com:$u/$repoName.git\"";) &&
 
-    # (sudo -H -u $USER bash -c 'git push -u origin master' || # Upload the new repository
-    # error "Not able to push the changes")
+    (sudo -H -u $USER bash -c 'git push -u origin master' || # Upload the new repository
+    error "Not able to push the changes")
 fi
 
-echo "--------------------------------------
-${LGREEN}
-Repositories linked${NC}
-";
+echo "--------------------------------------\n${LGREEN}\nRepositories linked${NC}\n";
