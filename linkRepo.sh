@@ -36,9 +36,9 @@ echo "${TITLE}
 
 
 
-u="jkutkut";
+u="jkutkut"; # Default user
 fullDirectory=~/github; # Default directory
-type="create";
+type="create"; # Default type of link
 
 # Change the user and the directory acording to the arguments given.
 current=1;
@@ -92,36 +92,34 @@ and connect it to the user ${YELLOW}$u${NC}.
 (mkdir $fullDirectory || # Make the directory to init the repo
 error "Directory is not correct.") && 
 
-# ls $fullDirectory &&
+cd $fullDirectory/ && # Go to directory
 
-cd $fullDirectory/ &&
 (git init || # Init repository
 error "Not possible to init git") &&
 
+(mkdir .info ||
+error "Not able to create directories on the repository") &&
+
+# Create initial files
 (echo "# $repoName:
-" >> README.md || # Create the README.md file on the repository
-error "Not posible to create README.md") &&
-
-(touch .gitignore || # Create the .gitignore file
-error "Not able to create the .gitignore file") &&
-
-(echo "# ThingsToDo:
-- " >> ThingsToDo.md || # Create the ThingsToDo.md file on the repository
-error "Not posible to create ThingsToDo.md") &&
-
-(touch .gitignore || # Create the .gitignore file on the repository
+" >> README.md; && # Create the README.md file on the repository
+touch .gitignore; && # Create the .gitignore file
+echo "# ThingsToDo:
+- " >> .info/ThingsToDo.md; && # Create the ThingsToDo.md file on the repository
+touch .gitignore && # Create the .gitignore file on the repository
 error "Not posible to create ThingsToDo.md") &&
 
 
 
-(git add .gitignore * || # Add all files created
+(git add .gitignore * .info/* || # Add all files created
 error "Not possible to add the created files") &&
+
 (git commit -am "Initial files created" || # Commit the creation
-error "Error at commit") &&
+error "Error at commiting initial files") &&
 
 
-if [ $type = "create" ]; then
-    echo "creating repository using hub:"; &&
+if [ $type = "create" ]; then # If the intention is to create a repository
+    echo "Creating repository using hub:"; &&
     hub create ||
     error "Not able to create repository";
 else # Connect to github and update the content to the already created repo
