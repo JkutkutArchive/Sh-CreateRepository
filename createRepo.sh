@@ -10,24 +10,35 @@ YELLOW='\033[1;33m'
 LBLUE='\033[1;34m'
 TITLE='\033[38;5;33m'
 
+echo "${TITLE}
+ _      _       _    _____                      _ _                   
+| |    (_)     | |  |  __ \                    (_) |                  
+| |     _ _ __ | | _| |__) |___ _ __   ___  ___ _| |_ ___  _ __ _   _ 
+| |    | | '_ \| |/ /  _  // _ \ '_ \ / _ \/ __| | __/ _ \| '__| | | |
+| |____| | | | |   <| | \ \  __/ |_) | (_) \__ \ | || (_) | |  | |_| |
+|______|_|_| |_|_|\_\_|  \_\___| .__/ \___/|___/_|\__\___/|_|   \__, |
+                               | |                               __/ |
+                               |_|                              |___/${NC}";
+
 
 if [ $1 = "--help" ]; then
-    echo "${TITLE}* CreateRepository help *${NC}\n";
-    echo "The script has the following arguments:";
-    echo "  ${LBLUE}-u [*arg]${NC}:\n    Change the user/owner of the repository.";
-    echo "    The parameter ${LBLUE}--user${NC} can also be used.\n";
-    echo "  ${LBLUE}-d [*arg]${NC}:\n    Change the directory to store the local repository (The path is intended to be absolute).";
-    echo "    The parameters ${LBLUE}--dir${NC} or ${LBLUE}--directory${NC} can also be used.\n";
-    echo "  ${LBLUE}--create${NC}:\n    If the repository should be created on github.\n";
-    echo "  ${LBLUE}--link${NC}:\n    If the repository should be linked to an already created repository on github.\n";
-    echo "  ${LBLUE}templates:${NC}:\n    Activate it adding the arguments ${LBLUE}--web${NC}, .\n    Each one will generate a repository structure with the basic files of the template.\n";
-    echo "  ${LBLUE}--extraFiles${NC}:\n    If the repository should be created with aditional files.\n";
-    echo "  ${LBLUE}--noExtraFiles${NC}:\n    If the repository should not be created with aditional files.\n";
-    
+    echo "${TITLE}* CreateRepository help *${NC}\n\n
+The script can have the following arguments:
+  ${LBLUE}-u [*arg]${NC}:\n    Change the user/owner of the repository.
+    The parameter ${LBLUE}--user${NC} can also be used.\n
+  ${LBLUE}-d [*arg]${NC}:\n    Change the directory to store the local repository (The path is intended to be absolute).
+    The parameters ${LBLUE}--dir${NC} or ${LBLUE}--directory${NC} can also be used.\n
+  ${LBLUE}[*repoName]${NC}:\n    The name of the repository. Keep in mind that it should match RegEx '^[a-zA-Z0-9-_]+$'\n
+  ${LBLUE}--create${NC}:\n    If the repository should be created on github.\n
+  ${LBLUE}--link${NC}:\n    If the repository should be linked to an already created repository on github.\n
+  ${LBLUE}[templates]:${NC}:\n    To use a template, use the arguments ${LBLUE}--web${NC}, .\n    Each one will generate a repository structure with the basic files of the template.\n
+  ${LBLUE}--extraFiles${NC}:\n    If the repository should be created with aditional files.\n
+  ${LBLUE}--noExtraFiles${NC}:\n    If the repository should not be created with aditional files.\n
+  ${LBLUE}--help${NC}:\n    Opens a help menu instead of running the script.\n
 
-    echo "${YELLOW}Notes:${NC}";
-    echo " - All arguments with ${LBLUE}[*arg]${NC} expect a single word to follow.\n   If not given, the script will ask for it before execution.";
-    echo " - All arguments can be concatenated at will. However, only the last ones will have the final desition.\n";
+${YELLOW}Considerations:${NC}
+ - All arguments with ${LBLUE}[*XXX]${NC} expect a single word to follow.\n   If not given, the script will ask for it before execution.
+ - All arguments can be concatenated at will.\n   However, only the last ones will have the final desition.\n" | more -d -f;
     exit 0;
 fi
 
@@ -51,15 +62,6 @@ addFiles2Repo() {
    error "Error at commiting initial files")
 }
 
-echo "${TITLE}
- _      _       _    _____                      _ _                   
-| |    (_)     | |  |  __ \                    (_) |                  
-| |     _ _ __ | | _| |__) |___ _ __   ___  ___ _| |_ ___  _ __ _   _ 
-| |    | | '_ \| |/ /  _  // _ \ '_ \ / _ \/ __| | __/ _ \| '__| | | |
-| |____| | | | |   <| | \ \  __/ |_) | (_) \__ \ | || (_) | |  | |_| |
-|______|_|_| |_|_|\_\_|  \_\___| .__/ \___/|___/_|\__\___/|_|   \__, |
-                               | |                               __/ |
-                               |_|                              |___/${NC}"
 
 
 repoName=""; # The name of the repository (changed on execution)
