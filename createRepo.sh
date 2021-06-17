@@ -32,7 +32,6 @@ if [ $1 = "--help" ]; then
 fi
 
 
-
 askResponse=""; #When executing the function ask(), the response will be stored here
 ask() { # to do the read in terminal, save the response in askResponse
     text=$1;
@@ -60,15 +59,15 @@ echo "${TITLE}
 | |____| | | | |   <| | \ \  __/ |_) | (_) \__ \ | || (_) | |  | |_| |
 |______|_|_| |_|_|\_\_|  \_\___| .__/ \___/|___/_|\__\___/|_|   \__, |
                                | |                               __/ |
-                               |_|                              |___/ ${NC}"
+                               |_|                              |___/${NC}"
 
 
-
+repoName=""; # The name of the repository (changed on execution)
 u="jkutkut"; # Default user
 fullDirectory=~/github; # Default directory
 type="create"; # Default type of link (create repository or use already created repository)
 extraFiles=1; # If extra files should be created (1: true, 0: false).
-template="None"; # If special templates selected (Web...)
+template="None"; # If special templates selected (Web, None)
 
 # Change the user and the directory acording to the arguments given.
 while [ ! -z $1 ]; do # While the are avalible arguments
@@ -105,7 +104,14 @@ while [ ! -z $1 ]; do # While the are avalible arguments
             continue;
             ;;
         *)
-            error "Invalid argument";
+            if [ $(expr match "$1" ^[a-zA-Z0-9]+$) ]; then
+                # echo "Repo name = '$1'";
+                repoName=$1;
+                shift;
+                continue;
+            else
+                error "Invalid argument";
+            fi
     esac
 
     shift; # -ANY argument removed
@@ -121,9 +127,11 @@ while [ ! -z $1 ]; do # While the are avalible arguments
     eval $v="$vContent";
 done
 
-
-ask "Name of the repository?" "";
-repoName=$askResponse; # Store the name of the Repository.
+echo currentName: $repoName;
+if [ $repoName = "" ]; then
+    ask "Name of the repository?" "";
+    repoName=$askResponse; # Store the name of the Repository.
+fi
 
 fullDirectory=$fullDirectory/$repoName; # Update directory based on the name of the repo
 
