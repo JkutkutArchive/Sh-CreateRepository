@@ -104,6 +104,11 @@ while [ ! -z $1 ]; do # While the are avalible arguments
             shift;
             continue;
             ;;
+        --python)
+            template="python";
+            shift;
+            continue;
+            ;;
         *)
             error "Invalid argument";
     esac
@@ -163,12 +168,23 @@ fi
 # If template, implement it
 case $template in
     web)
-        (mkdir res res/CSS res/Img res/JS ||
+        (mkdir Res Res/CSS Res/Img Res/JS ||
         error "Not able to create the directories of the web template") &&
 
         (echo -e '<!DOCTYPE html><html>\n\t<head>\n\t\t<meta charset=\"utf-8\">\n\n\t\t<!-- Logo & title -->\n\t\t<title>$repoName</title>\n\t\t<!-- <link rel=\"icon\" href=\"\"> -->\n\n\t\t<!-- CSS -->\n\t\t<link rel=\"stylesheet\" type=\"text/css\" href=\"res/style.css\">\n\n\t\t<!-- JS -->\n\t\t<script src=\"sketch.js\"></script>\n\t</head>\n\t<body>\n\t</body>\n</html>' >> index.html &&
         touch sketch.js Res/CSS/style.css ||
         error "Not able to create the files of the web template")
+        continue;
+        ;;
+    python)
+        (mkdir Res Classes ||
+        error "Not able to create the directories of the python template") &&
+
+        (touch main.py ||
+        error "Not able to create the files of the python template")
+        continue;
+        ;;
+
 esac
 
 if [ ! $template = "None" ]; then # If template selected, add the files created
