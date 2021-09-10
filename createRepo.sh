@@ -196,6 +196,7 @@ fi
 
 if [ $type = "create" ]; then # If the intention is to create a repository
     echo "Creating repository using hub:";
+    echo "If user and password asked (1º time), use the username and a token as the password (use the webpage to generate it).";
     hub create ||
     error "Not able to create repository";
 else # Connect to github and update the content to the already created repo
