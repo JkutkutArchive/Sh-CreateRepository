@@ -20,7 +20,7 @@ if [ $1 = "--help" ]; then
     echo "    The parameters ${LBLUE}--dir${NC} or ${LBLUE}--directory${NC} can also be used.\n";
     echo "  ${LBLUE}--create${NC}:\n    If the repository should be created on github.\n";
     echo "  ${LBLUE}--link${NC}:\n    If the repository should be linked to an already created repository on github.\n";
-    echo "  ${LBLUE}templates:${NC}:\n    Activate it adding the arguments ${LBLUE}--web${NC}, .\n    Each one will generate a repository structure with the basic files of the template.\n";
+    echo "  ${LBLUE}templates:${NC}:\n    Activate it adding the arguments ${LBLUE}--web, --python${NC}.\n    Each one will generate a repository structure with the basic files of the template.\n";
     echo "  ${LBLUE}--extraFiles${NC}:\n    If the repository should be created with aditional files.\n";
     echo "  ${LBLUE}--noExtraFiles${NC}:\n    If the repository should not be created with aditional files.\n";
     
