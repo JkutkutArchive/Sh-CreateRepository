@@ -197,7 +197,9 @@ fi
 if [ $type = "create" ]; then # If the intention is to create a repository
     echo "Creating repository using hub:";
     echo "If user and password asked (1º time), use the username and a token as the password (use the webpage to generate it).";
-    hub create ||
+    hub create && # Create the repository on GitHub
+    gitBranchVersion=$(git branch --show-current) && # Get the branch name (usually main or master)
+    git push --set-upstream origin $gitBranchVersion || # Update the server
     error "Not able to create repository";
 else # Connect to github and update the content to the already created repo
     echo "Linking repository to github account";
