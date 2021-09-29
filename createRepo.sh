@@ -146,7 +146,7 @@ error "Not possible to init git") &&
 
 
 # Create initial files
-(echo -e "# $repoName:\n" >> README.md && # Create the README.md file on the repository
+(echo "# $repoName:\n" >> README.md && # Create the README.md file on the repository
 touch .gitignore || # Create the .gitignore file on the repository
 error "Not posible to create initial files") &&
 
@@ -158,7 +158,7 @@ if [ $extraFiles -eq 1 ]; then
     # Add the extra files
     (mkdir ".info" ||
     error "Not able to create directories on the repository") &&
-    (echo -e "# ThingsToDo:\n- " >> ./.info/ThingsToDo.md || # Create the ThingsToDo.md file on the repository
+    (echo "# ThingsToDo:\n- " >> ./.info/ThingsToDo.md || # Create the ThingsToDo.md file on the repository
     error "not able to create the extra files")
 
     addFiles2Repo "Extra files added";
