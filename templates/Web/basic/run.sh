@@ -1,1 +1,0 @@
-echo "<!DOCTYPE html><html>\n\t<head>\n\t\t<meta charset=\"utf-8\">\n\n\t\t<!-- Logo & title -->\n\t\t<title>$repoName</title>\n\t\t<!-- <link rel=\"icon\" href=\"\"> -->\n\n\t\t<!-- CSS -->\n\t\t<link rel=\"stylesheet\" type=\"text/css\" href=\"res/style.css\">\n\n\t\t<!-- JS -->\n\t\t<script src=\"sketch.js\"></script>\n\t</head>\n\t<body>\n\t</body>\n</html>" > index.html
