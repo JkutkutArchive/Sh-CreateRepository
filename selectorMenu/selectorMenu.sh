@@ -23,10 +23,11 @@ ask() { # to do the read in terminal, save the response in askResponse
 }
 
 selection="" #When executing the funtion selectionMenu(), the result will be stored here
-selectionMenu() { #allows to create a selection menu. arguments: "op1 opt2..." "skip"
+selectionMenu() { #allows to create a selection menu. arguments: "template" "op1 opt2..." "skip"
 	elements=$2
 	skipElement=$3
 
+	# Show elements
 	echo "Select a $1:"
 	l=0
 	for t in $elements; do
@@ -36,19 +37,21 @@ selectionMenu() { #allows to create a selection menu. arguments: "op1 opt2..." "
 		l=$((l + 1))
 		echo " - ${YELLOW}$l${NC} $t"
 	done
+
+	# Ask for the wanted element
 	ask "Wanted $1" "[0-$l]"
 	option=$askResponse
-	
-	if expr "$option" : '[0-9][0-9]*$'>/dev/null && [ $option -ge 0 ] && [ $option -le $l ]; then
+	if expr "$option" : '[0-9][0-9]*$'>/dev/null &&
+		[ $option -ge 0 ] && [ $option -le $l ]; then
+		# If option is valid, find the option name
 		l=0
 		for t in $elements; do
 			if [ $l -eq $option ]; then
-				selection=$t
-				break
+				selection=$t # Store it here
+				return
 			fi
 			l=$((l + 1))
 		done
-		return
 	else
 		echo "${YELLOW}Invalid response${NC}\n"
 		selectionMenu "$1" "$2" "$3"
