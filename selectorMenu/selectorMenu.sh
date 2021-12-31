@@ -39,7 +39,7 @@ selectionMenu() { #allows to create a selection menu. arguments: "op1 opt2..." "
 	ask "Wanted $1" "[0-$l]"
 	option=$askResponse
 	
-	if [ $(expr match "$option" '^[0-9]+$') ]; then # && [ $option -ge 0 ] && [ $option -le $l ]; then
+	if expr "$option" : '[0-9][0-9]*$'>/dev/null && [ $option -ge 0 ] && [ $option -le $l ]; then
 		l=0
 		for t in $elements; do
 			if [ $l -eq $option ]; then
