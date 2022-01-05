@@ -17,15 +17,15 @@ TITLE='\033[38;5;33m'
 # Functions
 askResponse=""; #When executing the function ask(), the response will be stored here
 ask() { # to do the read in terminal, save the response in askResponse
-    text=$1;
-    textEnd=$2;
+    local	text=$1 \
+    		textEnd=$2
     read -p "$(echo ${LBLUE}"$text"${NC} $textEnd)->" askResponse;
 }
 
 selection="" #When executing the funtion selectionMenu(), the result will be stored here
 selectionMenu() { #allows to create a selection menu. arguments: "template" "op1 opt2..." "skip"
-	elements=$2
-	skipElement=$3
+	local	elements=$2 \
+			skipElement=$3
 
 	# Show elements
 	echo "Select a $1:"
@@ -57,5 +57,15 @@ selectionMenu() { #allows to create a selection menu. arguments: "template" "op1
 		selectionMenu "$1" "$2" "$3"
 	fi
 }
+nameOfD=""
+nameOfDir() {
+	echo "***$1***"
+	#nameOfD=$(ls -d $1) #| sed 's/.*\///g')
+	nameOfD=$(ls -d $1 | sed -E 's/^.*([^\/]*)\/$/\1/')
 
+}
 
+nameOfDir "./*/"
+
+echo "names:"
+echo $nameOfD
