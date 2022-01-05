@@ -68,6 +68,57 @@ getTemplates() {
 	selectionMenu "$1" "$dirs" "$3"
 }
 
+# CODE
+echo "${TITLE}
+   ____                _       ____                  
+  / ___|_ __ ___  __ _| |_ ___|  _ \ ___ _ __   ___  
+ | |   | '__/ _ \/ _\` | __/ _ \ |_) / _ \ '_ \ / _ \ 
+ | |___| | |  __/ (_| | ||  __/  _ <  __/ |_) | (_) |
+  \____|_|  \___|\__,_|\__\___|_| \_\___| .__/ \___/ 
+                                        |_|          
+${NC}"
+
+if [ "$1" = "--help" ]; then
+	echo "${TITLE}* CreateRepository help *${NC}\n"
+    echo "The script has the following arguments:"
+    echo "  ${LBLUE}--create${NC}:\n    If the repository should be created on github.\n"
+    echo "  ${LBLUE}--link${NC}:\n    If the repository should be linked to an already created repository on github.\n"
+	echo "${YELLOW}Notes:${NC}"
+	echo " - All arguments can be concatenated at will. However, only the last ones will have the final desition.\n"
+	exit 0
+fi
+
+fullDirectory=~/github; # Default directory
+type="create"; # Default type of link (create repository or use already created repository)
+extraFiles=1; # If extra files should be created (1: true, 0: false).
+template="None"; # If special templates selected (Web...)
+
+# Change the user and the directory acording to the arguments given.
+while [ ! -z $1 ]; do # While the are avalible arguments
+    v=""; # Variable to change
+    vContent=""; # Value to asing to the variable
+    q=""; # Question to tell the user if no further arguments given
+
+    case $1 in
+		--create|--link)
+            type=$(echo $1 | sed -e 's/--//');
+            shift;
+            continue;
+            ;;
+	esac
+
+    shift; # -ANY argument removed
+        
+    if [ $(expr match "$1" ^\(-.+\)?$) ]; then # If not given
+        ask "$q" ""; # Ask for it
+        vContent=$askResponse; # The response is the content
+    else
+        vContent=$1; # Next argument is the content
+        shift;
+    fi
+
+    eval $v="$vContent";
+done
 getTemplates "template type" "templates/*" "common"
 templateType=$selection
 getTemplates "template" "templates/$selection/*" ""
