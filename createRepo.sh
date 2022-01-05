@@ -57,14 +57,19 @@ selectionMenu() { #allows to create a selection menu. arguments: "template" "op1
 		selectionMenu "$1" "$2" "$3"
 	fi
 }
-nameOfD=""
-nameOfDir() {
+dirs=""
+directories() {
 	echo "***$1***"
-	#nameOfD=$(ls -d $1) #| sed 's/.*\///g')
-	nameOfD=$(ls -d $1 | sed -E 's/^.*\/([^\/]*)\/$/\1/')
+	dirs=$(ls -d $1 | tr " " "\n" | sed -E 's/[^\/]*\/([^\/]*)/\1/g')
 }
 
-nameOfDir "./*/"
+getTemplates() {
+	local dir=$1
+	directories "$dir"
+	selectionMenu "template type" "$dirs" ""
+}
 
-echo "names:"
-echo $nameOfD
+getTemplates "templates/*"
+
+echo "selected:"
+echo $selection
