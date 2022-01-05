@@ -119,7 +119,17 @@ while [ ! -z $1 ]; do # While the are avalible arguments
 
     eval $v="$vContent";
 done
-getTemplates "template type" "templates/*" "common"
-templateType=$selection
-getTemplates "template" "templates/$selection/*" ""
-echo "selected: $templateType/$selection"
+
+echo "Mode: ${YELLOW}$type${NC}\n"
+
+ask "Name of the repository?" "";
+repoName=$askResponse; # Store the name of the Repository.
+
+
+
+if [ ! $template = "None" ]; then
+	getTemplates "template type" "templates/*" "common"
+	templateType=$selection
+	getTemplates "template" "templates/$selection/*" ""
+	echo "selected: $templateType/$selection"
+fi
