@@ -61,8 +61,7 @@ nameOfD=""
 nameOfDir() {
 	echo "***$1***"
 	#nameOfD=$(ls -d $1) #| sed 's/.*\///g')
-	nameOfD=$(ls -d $1 | sed -E 's/^.*([^\/]*)\/$/\1/')
-
+	nameOfD=$(ls -d $1 | sed -E 's/^.*\/([^\/]*)\/$/\1/')
 }
 
 nameOfDir "./*/"
