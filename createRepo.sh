@@ -39,12 +39,12 @@ selectionMenu() { #allows to create a selection menu. arguments: "template" "op1
 	done
 
 	# Ask for the wanted element
-	ask "Wanted $1" "[0-$l]"
+	ask "Wanted $1" "[1-$l]"
 	option=$askResponse
 	if expr "$option" : '[0-9][0-9]*$'>/dev/null &&
 		[ $option -ge 0 ] && [ $option -le $l ]; then
 		# If option is valid, find the option name
-		l=0
+		l=1
 		for t in $elements; do
 			if [ $l -eq $option ]; then
 				selection=$t # Store it here
