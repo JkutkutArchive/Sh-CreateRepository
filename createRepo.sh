@@ -29,7 +29,7 @@ selectionMenu() { #allows to create a selection menu. arguments: "template" "op1
 
 	# Show elements
 	echo "Select a $1:"
-	l=0
+	l=-1
 	for t in $elements; do
 		if [ "$t" = "$skipElement" ]; then
 			continue
@@ -39,7 +39,7 @@ selectionMenu() { #allows to create a selection menu. arguments: "template" "op1
 	done
 
 	# Ask for the wanted element
-	ask "Wanted $1" "[1-$l]"
+	ask "Wanted $1" "[0-$l]"
 	option=$askResponse
 	if expr "$option" : '[0-9][0-9]*$'>/dev/null &&
 		[ $option -ge 0 ] && [ $option -le $l ]; then
@@ -65,7 +65,7 @@ directories() {
 getTemplates() {
 	local dir=$2
 	directories "$dir"
-	selectionMenu "$1" "$dirs" "$3"
+	selectionMenu "$1" "None $dirs" "$3"
 }
 
 # CODE
@@ -132,10 +132,7 @@ fullDirectory=$fullDirectory/$repoName; # Update directory based on the name of 
 
 echo "\nAtempting to $type a reposititory on ${YELLOW}$fullDirectory${NC}\n";
 
-if [ "$type" = "link" ]; then
-	ask ""
-
-if [ ! $template = "None" ]; then
+if [ 0 ]; then
 	getTemplates "template type" "templates/*" "common"
 	templateType=$selection
 	getTemplates "template" "templates/$selection/*" ""
