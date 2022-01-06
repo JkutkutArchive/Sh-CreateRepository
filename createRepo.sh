@@ -91,7 +91,6 @@ fi
 fullDirectory=~/github; # Default directory
 type="create"; # Default type of link (create repository or use already created repository)
 extraFiles=1; # If extra files should be created (1: true, 0: false).
-template="None"; # If special templates selected (Web...)
 
 # Change the user and the directory acording to the arguments given.
 while [ ! -z $1 ]; do # While the are avalible arguments
@@ -104,6 +103,10 @@ while [ ! -z $1 ]; do # While the are avalible arguments
             type=$(echo $1 | sed -e 's/--//');
             shift;
             continue;
+            ;;
+		-d|--dir|--directory)
+            q="Directory?";
+            v="fullDirectory";
             ;;
 	esac
 
@@ -125,7 +128,12 @@ echo "Mode: ${YELLOW}$type${NC}\n"
 ask "Name of the repository?" "";
 repoName=$askResponse; # Store the name of the Repository.
 
+fullDirectory=$fullDirectory/$repoName; # Update directory based on the name of the repo
 
+echo "\nAtempting to $type a reposititory on ${YELLOW}$fullDirectory${NC}\n";
+
+if [ "$type" = "link" ]; then
+	ask ""
 
 if [ ! $template = "None" ]; then
 	getTemplates "template type" "templates/*" "common"
