@@ -1,7 +1,9 @@
 #!/bin/sh
 
 # Constants:
+USER="Jkutkut"
 COMMON="common"
+DEFAULT_REMOTE="git@github.com:$USER/"
 
 #colors:
 NC='\033[0m' # No Color
@@ -134,7 +136,17 @@ fullDirectory=$fullDirectory/$repoName; # Update directory based on the name of 
 
 echo "\nAtempting to $type a reposititory on ${YELLOW}$fullDirectory${NC}\n";
 
+# TODO If default not given, ask for it
 
+if [ "$type" = "link" ]; then
+	# Link mode
+	echo "Enter the URL of the repository or \"\" to use ${YELLOW}$DEFAULT_REMOTE$repoName.git${NC}"
+	ask "url:"
+else
+	# Create
+	echo "Enter the link of the remote or nothing to use hub."
+	ask "url:"
+fi
 
 
 exit 0;
