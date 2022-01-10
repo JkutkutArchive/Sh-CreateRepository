@@ -160,13 +160,24 @@ else
 	# Create
 	selectionMenu "option" "LocalRepository GitHubRepository"
 	
-	mkdir -p $fullDirectory
-	git init $fullDirectory
+	mkdir $fullDirectory &&
+	echo "- Repository ${GREEN}created${NC}" ||
+	error "Not able to create directory"
+
+	git init $fullDirectory > /dev/null &&
+	echo "- Repository ${GREEN}inicialized${NC}" ||
+	(rm -r $fullDirectory
+	error "Not able to init repository. Aborting")
+	
+	echo "$selection"
 	if [ "$selection" = "GitHubRepository" ]; then
+		echo "Creating repository on ${YELLOW}$DEFAULT_REMOTE$repoName.git${NC}"
 		cd $fullDirectory &&
 		hub create &&
-		cd - ||
-		(cd -; error "Not able to create repository")
+		cd - > /dev/null ||
+		(cd -
+		rm -rf $fullDirectory
+		error "Not able to create repository using Hub")
 	fi
 fi
 
