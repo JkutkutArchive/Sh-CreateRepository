@@ -160,17 +160,19 @@ else
 	# Create
 	selectionMenu "option" "LocalRepository GitHubRepository"
 	
-	# TODO:
-	# mkdir
-	# git init
-	# if Git
-	#	hub create
+	mkdir -p $fullDirectory
+	git init $fullDirectory
+	if [ "$selection" = "GitHubRepository" ]; then
+		cd $fullDirectory &&
+		hub create &&
+		cd - ||
+		(cd -; error "Not able to create repository")
+	fi
 fi
 
+ask "Use template?" "[*/no]"
 
-exit 0;
-
-if [ 0 ]; then
+if [ ! "$askResponse" = "no" ]; then
 	getTemplates "template type" "templates/*" "common"
 	templateType=$selection
 	getTemplates "template" "templates/$selection/*" ""
