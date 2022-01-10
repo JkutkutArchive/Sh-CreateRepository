@@ -142,10 +142,22 @@ if [ "$type" = "link" ]; then
 	# Link mode
 	echo "Enter the URL of the repository or \"\" to use ${YELLOW}$DEFAULT_REMOTE$repoName.git${NC}"
 	ask "url:"
+	url="$DEFAULT_REMOTE$repoName.git"
+	if [ ! "$askResponse" = "" ]; then
+		url=$askResponse;
+	fi
+
+	# TODO
+	# git clone $URL $fullDirectory
 else
 	# Create
-	echo "Enter the link of the remote or nothing to use hub."
-	ask "url:"
+	selectionMenu "option" "LocalRepository GitHubRepository"
+	
+	# TODO:
+	# mkdir
+	# git init
+	# if Git
+	#	hub create
 fi
 
 
