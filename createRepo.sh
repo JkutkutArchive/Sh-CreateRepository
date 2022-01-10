@@ -174,13 +174,21 @@ else
 		echo "Creating repository on ${YELLOW}$DEFAULT_REMOTE$repoName.git${NC}"
 		cd $fullDirectory &&
 		hub create &&
-		cd - > /dev/null ||
+		cd - > /dev/null &&
+		echo "- Repository ${GREEN}created on GitHub${NC}" ||
 		(cd -
 		rm -rf $fullDirectory
 		error "Not able to create repository using Hub")
+		
+		git push --set-upstream origin main &&
+		echo "- Default branch ${GREEN}ready to push${NC} to remote" ||
+		error "Not able to set up the default upstream branch"
 	fi
 fi
 
+echo "\n\n${TITLE}Templates:${NC}\nA template allows to define the default structure of the repository."
+echo "This enables to ${GREEN}setup the project${NC} easily."
+echo "(Keep in mind that using templates will ${YELLOW}delete${NC} previous files)"
 ask "Use template?" "[*/no]"
 
 if [ ! "$askResponse" = "no" ]; then
