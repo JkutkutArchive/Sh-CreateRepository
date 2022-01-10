@@ -72,6 +72,11 @@ getTemplates() {
 	selectionMenu "$1" "None $dirs" "$3"
 }
 
+error() {
+	echo "\n${RED}~~~~~~~~  ERROR ~~~~~~~~\n$1${NC}";
+	exit 1;
+}
+
 # CODE
 echo "${TITLE}
    ____                _       ____                  
@@ -146,9 +151,11 @@ if [ "$type" = "link" ]; then
 	if [ ! "$askResponse" = "" ]; then
 		url=$askResponse;
 	fi
-
-	# TODO
-	# git clone $URL $fullDirectory
+	
+	echo "Cloning ${YELLOW}$url${NC}"
+	git clone -q $url $fullDirectory && # Clone repository quiet
+	echo "	- ${GREEN}cloned${NC}!" ||
+	error "Not able to clone $url"
 else
 	# Create
 	selectionMenu "option" "LocalRepository GitHubRepository"
