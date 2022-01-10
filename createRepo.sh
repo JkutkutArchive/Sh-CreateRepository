@@ -17,15 +17,16 @@ TITLE='\033[38;5;33m'
 # Functions
 askResponse=""; #When executing the function ask(), the response will be stored here
 ask() { # to do the read in terminal, save the response in askResponse
-    local	text=$1 \
-    		textEnd=$2
+    text=$1
+    textEnd=$2
     read -p "$(echo ${LBLUE}"$text"${NC} $textEnd)->" askResponse;
+	unset text textEnd
 }
 
 selection="" #When executing the funtion selectionMenu(), the result will be stored here
 selectionMenu() { #allows to create a selection menu. arguments: "template" "op1 opt2..." "skip"
-	local	elements=$2 \
-			skipElement=$3
+	elements=$2
+	skipElement=$3
 
 	# Show elements
 	echo "Select a $1:"
@@ -56,6 +57,7 @@ selectionMenu() { #allows to create a selection menu. arguments: "template" "op1
 		echo "${YELLOW}Invalid response${NC}\n"
 		selectionMenu "$1" "$2" "$3"
 	fi
+	unset elements skipElement
 }
 dirs=""
 directories() {
@@ -131,6 +133,11 @@ repoName=$askResponse; # Store the name of the Repository.
 fullDirectory=$fullDirectory/$repoName; # Update directory based on the name of the repo
 
 echo "\nAtempting to $type a reposititory on ${YELLOW}$fullDirectory${NC}\n";
+
+
+
+
+exit 0;
 
 if [ 0 ]; then
 	getTemplates "template type" "templates/*" "common"
