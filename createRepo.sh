@@ -174,14 +174,15 @@ else
 		echo "Creating repository on ${YELLOW}$DEFAULT_REMOTE$repoName.git${NC}"
 		cd $fullDirectory &&
 		hub create &&
+		gitBranchVersion=$(git branch --show-current) && # Get the branch name (usually main or master)
 		cd - > /dev/null &&
 		echo "- Repository ${GREEN}created on GitHub${NC}" ||
 		(cd -
 		rm -rf $fullDirectory
 		error "Not able to create repository using Hub")
 		
-		git push --set-upstream origin main &&
-		echo "- Default branch ${GREEN}ready to push${NC} to remote" ||
+		git push --set-upstream origin $gitBranchVersion && # Update the server
+		echo "- Default branch ${YELLOW}$gitBranchVersion ${GREEN}ready to push${NC} to remote" ||
 		error "Not able to set up the default upstream branch"
 	fi
 fi
