@@ -193,8 +193,23 @@ echo "(Keep in mind that using templates will ${YELLOW}delete${NC} previous file
 ask "Use template?" "[*/no]"
 
 if [ ! "$askResponse" = "no" ]; then
+	# Basic template
+	echo "Select a basic/generic template:"
+	getTemplates "template" "templates/common/*" ""
+	basicTemplate=$selection;
+	# TODO: set basic template
+
+	# Specific template type
 	getTemplates "template type" "templates/*" "common"
 	templateType=$selection
-	getTemplates "template" "templates/$selection/*" ""
-	echo "selected: $templateType/$selection"
+	if [ ! "$templateType" = "None" ]; then
+		# Specific template
+		getTemplates "template" "templates/$selection/*" ""
+		template=$selection
+	fi
+
+	if [ ! "$templateType" = "None" ]; then
+		echo "selected: $templateType/$selection"
+		# TODO: Set the template
+	fi
 fi
