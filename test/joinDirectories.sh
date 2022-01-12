@@ -20,11 +20,15 @@ join() {
 	
 	for f in $(find $dir -type f); do
 		#echo "File raw: --$f--"
-		f=$(printf "$f" | sed "s/$dirRegex\///")
+		fileLocal=$(printf "$f" | sed "s/$dirRegex\///")
 		#echo "File: --$f--"
-		indir=$(printf $f | sed -E 's/(.*\/)?[^\/]*$/\1/')
+		indir=$(printf $fileLocal | sed -E 's/(.*\/)?[^\/]*$/\1/')
+		
 		echo "- Dir: $indir"
 		echo "  - $f"
+		
+		mkdir -p $dirOrigin/$indir
+		cat $f >> $dirOrigin/$fileLocal
 	done
 	echo "Done"
 }
