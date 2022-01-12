@@ -19,8 +19,10 @@ join() {
 	echo "Joining the content of $dir into $dirOrigin"
 	
 	for f in $(find $dir -type f); do
-		f=$(printf $f | sed -E "s/$dir\///")
-		indir=$(printf $f | sed -E 's/.*([^\/]*)$/\1/')
+		#echo "File raw: --$f--"
+		f=$(printf "$f" | sed "s/$dirRegex\///")
+		#echo "File: --$f--"
+		indir=$(printf $f | sed -E 's/(.*\/)?[^\/]*$/\1/')
 		echo "- Dir: $indir"
 		echo "  - $f"
 	done
