@@ -2,8 +2,9 @@
 
 dirO=./repo;
 dir1=./shRepo/templates/common/None
-dir2=./shRepo/templates/C/42Madrid-Project
-#dir2=./shRepo/templates/Web/basic
+dir2=hola
+# dir2=./shRepo/templates/C/42Madrid-Project
+# dir2=./shRepo/templates/Web/basic
 
 #Debug
 rm -rf $dirO
@@ -15,7 +16,14 @@ cd - > /dev/null
 setupFileName="setup-project.sh"
 applyTemplate() {
 	dirOrigin="$1"
+	if [ ! -d $dirOrigin ]; then
+		error "Directory $dirOrigin does not exist."
+	fi
 	dir="$2"
+	if [ ! -d $dir ]; then
+		echo "Directory $dir does not exist. Nothing to do here"
+		return
+	fi
 	dirRegex="$(echo $2 | sed 's/\//\\\//g')"
 
 	echo "Joining the content of $dir into $dirOrigin"
@@ -44,3 +52,5 @@ applyTemplate() {
 
 applyTemplate "$dirO" "$dir1"
 applyTemplate "$dirO" "$dir2"
+
+echo "Script ended"

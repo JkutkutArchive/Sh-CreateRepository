@@ -61,15 +61,51 @@ selectionMenu() { #allows to create a selection menu. arguments: "template" "op1
 	fi
 	unset elements skipElement
 }
+
 dirs=""
 directories() {
 	dirs=$(ls -d $1 | tr " " "\n" | sed -E 's/[^\/]*\/([^\/]*)/\1/g')
 }
-
 getTemplates() {
 	local dir=$2
 	directories "$dir"
 	selectionMenu "$1" "None $dirs" "$3"
+}
+
+setupFileName="setup-project.sh"
+applyTemplate() {
+	dirOrigin="$1"
+	if [ ! -d $dirOrigin ]; then
+		error "Directory $dirOrigin does not exist."
+	fi
+	dir="$2"
+	if [ ! -d $dir ]; then
+		echo "Directory $dir does not exist. Nothing to do here"
+		return
+	fi
+	dirRegex="$(echo $2 | sed 's/\//\\\//g')"
+
+	echo "Joining the content of $dir into $dirOrigin"
+	
+	for f in $(find $dir -type f); do
+		fileLocal=$(printf "$f" | sed "s/$dirRegex\///")
+		indir=$(printf $fileLocal | sed -E 's/(.*\/)?[^\/]*$/\1/')
+		
+		echo "- Dir: $indir"
+		echo "  - $f"
+		
+		mkdir -p $dirOrigin/$indir
+		cat $f >> $dirOrigin/$fileLocal
+	done
+	if [ -f $dirOrigin/$setupFileName ]; then
+		currentDir=$(pwd)
+		cd $dirOrigin
+		chmod 744 $setupFileName
+		./$setupFileName
+		rm ./$setupFileName
+		cd $currentDir
+	fi
+	echo "Done"
 }
 
 error() {
@@ -197,19 +233,22 @@ if [ ! "$askResponse" = "no" ]; then
 	echo "Select a basic/generic template:"
 	getTemplates "template" "templates/common/*" ""
 	basicTemplate=$selection;
-	# TODO: set basic template
+	if [ ! "$basicTemplate" = "None" ]; then
+		applyTemplate "$fullDirectory" "$basicTemplate"
+	fi
 
 	# Specific template type
 	getTemplates "template type" "templates/*" "common"
 	templateType=$selection
 	if [ ! "$templateType" = "None" ]; then
+		applyTemplate "$fullDirectory" "$templateType/common"
+
 		# Specific template
 		getTemplates "template" "templates/$selection/*" ""
 		template=$selection
-	fi
-
-	if [ ! "$templateType" = "None" ]; then
-		echo "selected: $templateType/$selection"
-		# TODO: Set the template
+		if [ ! "$template" = "None" ]; then
+			echo "selected: $templateType/$template"
+			applyTemplate "$fullDirectory" "$templateType/$template"
+		fi
 	fi
 fi
