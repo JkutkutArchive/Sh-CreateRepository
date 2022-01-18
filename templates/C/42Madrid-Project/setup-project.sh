@@ -1,8 +1,5 @@
 #!/bin/sh
 
-# COMMON
-defPDF=en.subject.pdf
-
 # Functions
 askResponse=""; #When executing the function ask(), the response will be stored here
 ask() { # to do the read in terminal, save the response in askResponse
@@ -56,10 +53,13 @@ getNamePDF() {
 	unset f
 }
 
+DEFAULT_NAME="en.subject.pdf"
 TYPE="c-piscine"
 
-# Ask for the link of the PDF
-getNamePDF "$defPDF" "$TYPE"
+ask "URL of Subject"
+wget $askResponse -o $DEFAULT_NAMEaskResponse -o $DEFAULT_NAME
 
-echo "pdfName: $pdfName"
+getNamePDF "$DEFAULT_NAME" "$TYPE"
+
+mv $defNamePDF $pdfName
 
